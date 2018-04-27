@@ -64,6 +64,9 @@ lst = Listener( 5140 )  # create a listen thread
 lst.start()  # then start
 
 
+def test2():
+    pass
+
 # Now, you can use telnet to test it, the command is "telnet 127.0.0.1 9011"
 # You also can use web broswer to test, input the address of "http://127.0.0.1:9011" and press Enter button
 # Enjoy it....
