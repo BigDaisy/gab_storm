@@ -1,0 +1,65 @@
+# 2018-03-27 09:49:41
+name: gab_storm
+
+topology:
+
+    - spout:
+        name: kafka-spout
+        type: kafka
+        options:
+            # The Kafka topic to stream from.
+            # Required.
+            topic: test3
+
+            # ZooKeeper connection string. Comma-separated list of ZooKeeper
+            # servers.
+            # Required.
+            zk_hosts: 192.168.12.9:2181,192.168.12.12:2181,192.168.12.11:2181
+
+            # Root path in ZooKeeper to store consumer offsets.
+            # Defaults to: /pyleus-kafka-offsets/<topology name>
+            # zk_root: /pyleus-kafka-offsets/kafka_spout_example
+
+            # Kafka consumer ID.
+            # Defaults to: pyleus-<topology name>
+            consumer_id: pyleus-gab_storm
+
+            # Whether the initial offset should be that specified by
+            # start_offset_time (true) or the head of the stream (false).
+            # Defaults to false.
+            from_start: false
+
+            # The offset time to start with if from_start is true.
+            # Defaults to the earliest offset time in the stream.
+            start_offset_time: 1398971060
+
+            # support binary data like google protobuf
+            binary_data: true
+
+#    - spout:
+#        name: mysql-spout
+#        module: gab_topology.mysql_spout
+
+    #处理攻击IP个数和攻击次数
+    - bolt:
+        name: storeBolt
+        module: gab_topology.storeBolt
+        parallelism_hint: 3
+        groupings:
+            - shuffle_grouping: kafka-spout
+
+#    - bolt:
+#        name: count-words
+#        module: word_count.count_words
+#        parallelism_hint: 3
+#        groupings:
+#            - fields_grouping:
+#                component: split-words
+#                fields:
+#                    - word
+#
+#    - bolt:
+#        name: log-results
+#        module: word_count.log_results
+#        groupings:
+#            - global_grouping: count-words
