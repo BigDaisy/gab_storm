@@ -63,6 +63,8 @@ class Listener( threading.Thread ):
 lst = Listener( 5140 )  # create a listen thread
 lst.start()  # then start
 
+def test():
+    pass
 
 def test2():
     pass
